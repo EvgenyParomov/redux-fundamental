@@ -1,5 +1,4 @@
 import { SVGProps } from "react";
-import { cn } from "../shared/cn";
 
 export function ArrowIcon(props: SVGProps<SVGSVGElement>) {
   return (

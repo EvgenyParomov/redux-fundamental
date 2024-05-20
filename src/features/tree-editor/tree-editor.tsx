@@ -1,7 +1,7 @@
-import { AddButton, DeleteButton } from "./ui/buttons";
-import { Input } from "./ui/input";
-import { Select } from "./ui/select";
+import { AddButton, DeleteButton } from "@/shared/ui/buttons";
 import { TreeItem } from "./ui/tree-item";
+import { Input } from "@/shared/ui/input";
+import { Select } from "@/shared/ui/select";
 
 export function TreeEditor() {
   return (
@@ -10,8 +10,8 @@ export function TreeEditor() {
         <AddButton className="text-4xl" />
         <Input placeholder="Search..." />
         <Select placeholder="Sort by">
-          <option value="name-asc">Name </option>
-          <option value="name-desc">Name</option>
+          <option value="name-asc">Name asc</option>
+          <option value="name-desc">Name desc</option>
         </Select>
       </div>
       <div className="flex flex-col gap-2">

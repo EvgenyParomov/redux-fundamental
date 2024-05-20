@@ -1,4 +1,4 @@
-import { ArrowIcon } from "./icons";
+import { ArrowIcon } from "@/shared/ui/icons";
 
 export function TreeItem({
   children,

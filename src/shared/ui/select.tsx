@@ -1,9 +1,9 @@
 import { InputHTMLAttributes } from "react";
-import { cn } from "../../shared/cn";
+import { cn } from "@/shared/cn";
 
-export function Input(props: InputHTMLAttributes<HTMLInputElement>) {
+export function Select(props: InputHTMLAttributes<HTMLSelectElement>) {
   return (
-    <input
+    <select
       {...props}
       className={cn("p-2 border border-slate-300 rounded", props.className)}
     />

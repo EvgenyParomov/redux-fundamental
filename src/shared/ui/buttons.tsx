@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from "react";
 import { AddIcon, DeleteIcon } from "./icons";
-import { cn } from "../../shared/cn";
+import { cn } from "@/shared/cn";
 
 export function AddButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (

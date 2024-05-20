@@ -1,6 +1,6 @@
-import { TreeEditor } from "./features/tree-editor/tree-editor";
+import { TreeEditor } from "@/features/tree-editor";
 
-export function App() {
+export function MainPage() {
   return (
     <div className="max-w-[1000px] mx-auto">
       <h1 className="text-3xl p-4 ">Tree editor</h1>
