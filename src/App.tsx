@@ -1,8 +1,14 @@
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { CounterId, DecrementAction, IncrementAction, store } from "./store";
-import { useEffect, useReducer } from "react";
+import {
+  AppState,
+  CounterId,
+  DecrementAction,
+  IncrementAction,
+  store,
+} from "./store";
+import { useEffect, useReducer, useRef } from "react";
 
 function App() {
   return (
@@ -30,19 +36,34 @@ function App() {
   );
 }
 
+const selectCounter = (state: AppState, counterId: CounterId) =>
+  state.counters[counterId];
+
 export function Counter({ counterId }: { counterId: CounterId }) {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
+  console.log("render counter", counterId);
+
+  const lastStateRef = useRef<ReturnType<typeof selectCounter>>();
 
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
-      forceUpdate();
+      const currentState = selectCounter(store.getState(), counterId);
+      const lastState = lastStateRef.current;
+
+      if (currentState !== lastState) {
+        forceUpdate();
+      }
+
+      lastStateRef.current = currentState;
     });
 
     return unsubscribe;
   }, []);
+
+  const counterState = selectCounter(store.getState(), counterId);
   return (
     <>
-      counter {store.getState().counters[counterId]?.counter}
+      counter {counterState?.counter}
       <button
         onClick={() =>
           store.dispatch({
