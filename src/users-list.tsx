@@ -1,42 +1,42 @@
-import { useState } from "react";
+import { memo, useState } from "react";
+import {
+  AppState,
+  createAppSelector,
+  useAppDispath,
+  useAppSelector,
+  UserId,
+  UserRemoveSelectedAction,
+  UserSelectedAction,
+} from "./store";
 
-type UserId = string;
-type User = {
-  id: UserId;
-  name: string;
-  description: string;
-};
-
-const users: User[] = Array.from({ length: 3000 }, (_, index) => ({
-  id: `user${index + 11}`,
-  name: `User ${index + 11}`,
-  description: `Description for User ${index + 11}`,
-}));
+const selectSortedUsers = createAppSelector(
+  (state: AppState) => state.users.ids,
+  (state: AppState) => state.users.entities,
+  (_: AppState, sort: "asc" | "desc") => sort,
+  (ids, entities, sort) =>
+    ids
+      .map((id) => entities[id])
+      .sort((a, b) => {
+        if (sort === "asc") {
+          return a.name.localeCompare(b.name);
+        } else {
+          return b.name.localeCompare(a.name);
+        }
+      })
+);
 
 export function UsersList() {
-  const [selectedUser, setSelectedUser] = useState<User>();
-
   const [sortType, setSortType] = useState<"asc" | "desc">("asc");
 
-  const handleUserClick = (user: User) => {
-    setSelectedUser(user);
-  };
+  const sortedUsers = useAppSelector((state) =>
+    selectSortedUsers(state, sortType)
+  );
 
-  const handleBackButtonClick = () => {
-    setSelectedUser(undefined);
-  };
-
-  const sortedUsers = users.sort((a, b) => {
-    if (sortType === "asc") {
-      return a.name.localeCompare(b.name);
-    } else {
-      return b.name.localeCompare(a.name);
-    }
-  });
+  const selectedUserId = useAppSelector((state) => state.users.selectedUserId);
 
   return (
     <div className="flex flex-col items-center">
-      {!selectedUser ? (
+      {!selectedUserId ? (
         <div className="flex flex-col items-center justify-between">
           <div className="flex flex-row items-center">
             <button
@@ -54,43 +54,50 @@ export function UsersList() {
           </div>
           <ul className="list-none">
             {sortedUsers.map((user) => (
-              <UserListItem
-                onClick={() => handleUserClick(user)}
-                user={user}
-                key={user.id}
-              />
+              <UserListItem userId={user.id} key={user.id} />
             ))}
           </ul>
         </div>
       ) : (
-        <SelectedUser
-          user={selectedUser}
-          onBackButtonClick={handleBackButtonClick}
-        />
+        <SelectedUser userId={selectedUserId} />
       )}
     </div>
   );
 }
 
-function UserListItem({ user, onClick }: { user: User; onClick: () => void }) {
+const UserListItem = memo(function UserListItem({
+  userId,
+}: {
+  userId: UserId;
+}) {
+  const user = useAppSelector((state) => state.users.entities[userId]);
+  const dispatch = useAppDispath();
+  const handleUserClick = () => {
+    dispatch({
+      type: "userSelected",
+      payload: { userId: user.id },
+    } satisfies UserSelectedAction);
+  };
   return (
-    <li key={user.id} className="py-2" onClick={onClick}>
+    <li key={user.id} className="py-2" onClick={handleUserClick}>
       <span className="hover:underline cursor-pointer">{user.name}</span>
     </li>
   );
-}
+});
 
-function SelectedUser({
-  user,
-  onBackButtonClick,
-}: {
-  user: User;
-  onBackButtonClick: () => void;
-}) {
+function SelectedUser({ userId }: { userId: UserId }) {
+  const user = useAppSelector((state) => state.users.entities[userId]);
+  const dispatch = useAppDispath();
+  const handleBackButtonClick = () => {
+    dispatch({
+      type: "userRemoveSelected",
+    } satisfies UserRemoveSelectedAction);
+  };
+
   return (
     <div className="flex flex-col items-center">
       <button
-        onClick={onBackButtonClick}
+        onClick={handleBackButtonClick}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded md"
       >
         Back
