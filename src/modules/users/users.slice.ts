@@ -1,4 +1,5 @@
-import { AppState, createAppSelector } from "../../store";
+import { createSelector } from "@reduxjs/toolkit";
+import { AppState } from "../../store";
 
 export type UserId = string;
 export type User = {
@@ -83,7 +84,7 @@ export const usersReducer = (
   }
 };
 
-export const selectSortedUsers = createAppSelector(
+export const selectSortedUsers = createSelector(
   (state: AppState) => state.users.ids,
   (state: AppState) => state.users.entities,
   (_: AppState, sort: "asc" | "desc") => sort,
