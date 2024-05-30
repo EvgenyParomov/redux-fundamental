@@ -1,3 +1,4 @@
+import { createAction, createReducer } from "@reduxjs/toolkit";
 import { AppState } from "../../store";
 
 type CounterState = {
@@ -7,31 +8,21 @@ export type CounterId = string;
 
 type CountersState = Record<CounterId, CounterState | undefined>;
 
-export type IncrementAction = {
-  type: "increment";
-  payload: {
-    counterId: CounterId;
-  };
-};
+export const incrementAction = createAction<{
+  counterId: CounterId;
+}>("countres/increment");
 
-export type DecrementAction = {
-  type: "decrement";
-  payload: {
-    counterId: CounterId;
-  };
-};
-
-type Action = IncrementAction | DecrementAction;
+export const decrementAction = createAction<{
+  counterId: CounterId;
+}>("countres/decrement");
 
 const initialCounterState: CounterState = { counter: 0 };
-const intiialCountersState: CountersState = {};
+const initialCountresState: CountersState = {};
 
-export const countersReducer = (
-  state = intiialCountersState,
-  action: Action
-): CountersState => {
-  switch (action.type) {
-    case "increment": {
+export const countersReducer = createReducer(
+  initialCountresState,
+  (builder) => {
+    builder.addCase(incrementAction, (state, action) => {
       const { counterId } = action.payload;
       const currentCounter = state[counterId] ?? initialCounterState;
       return {
@@ -41,8 +32,8 @@ export const countersReducer = (
           counter: currentCounter.counter + 1,
         },
       };
-    }
-    case "decrement": {
+    });
+    builder.addCase(decrementAction, (state, action) => {
       const { counterId } = action.payload;
       const currentCounter = state[counterId] ?? initialCounterState;
       return {
@@ -52,11 +43,9 @@ export const countersReducer = (
           counter: currentCounter.counter - 1,
         },
       };
-    }
-    default:
-      return state;
+    });
   }
-};
+);
 
 export const selectCounter = (state: AppState, counterId: CounterId) =>
   state.counters[counterId];
