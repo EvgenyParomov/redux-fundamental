@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": "user1",
+      "name": "John",
+      "description": "My first user"
+    },
+    {
+      "id": "user2",
+      "name": "Jane",
+      "description": "My second user"
+    },
+    {
+      "id": "user3",
+      "name": "Jim",
+      "description": "My third user"
+    },
+    {
+      "id": "user4",
+      "name": "Jill",
+      "description": "My fourth user"
+    }
+  ]
+}

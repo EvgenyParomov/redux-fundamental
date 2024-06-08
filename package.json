@@ -4,16 +4,21 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev:client": "vite",
+    "dev:server": "json-server db.json",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
+    "concurrently": "^8.2.2",
+    "json-server": "^1.0.0-beta.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^9.1.2"
+    "react-redux": "^9.1.2",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
