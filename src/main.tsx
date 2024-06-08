@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "./store.ts";
 import { fetchUsers } from "./modules/users/model/fetch-users.ts";
 
-fetchUsers(store.dispatch, store.getState);
+store.dispatch(fetchUsers());
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
