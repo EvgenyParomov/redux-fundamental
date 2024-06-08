@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
         element: <UsersList />,
         loader: () => {
           loadStore().then(() => {
-            store.dispatch(fetchUsers());
+            store.dispatch(fetchUsers({}));
           });
           return null;
         },
