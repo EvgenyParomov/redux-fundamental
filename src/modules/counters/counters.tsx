@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../store";
+import { useAppSelector } from "../../shared/redux";
 import {
   CounterId,
   selectCounter,

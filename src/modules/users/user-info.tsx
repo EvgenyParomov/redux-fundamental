@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { UserId, usersSlice } from "./users.slice";
-import { useAppDispath, useAppSelector } from "../../store";
+import { useAppDispath, useAppSelector } from "../../shared/redux";
 import { deleteUser } from "./model/delete-user";
 
 export function UserInfo() {
