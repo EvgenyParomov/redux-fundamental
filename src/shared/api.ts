@@ -1,11 +1,14 @@
-import { z } from "zod";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 const baseUrl = "http://localhost:3000";
 
-const UserDtoSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
+export const baseApi = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl }),
+  tagTypes: ["Users"],
+  endpoints: () => ({}),
 });
+
+/*
 
 export const api = {
   getUsers: () => {
@@ -30,3 +33,5 @@ export const api = {
     }).then((response) => response.json());
   },
 };
+
+*/

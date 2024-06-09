@@ -1,17 +1,15 @@
 import { AppThunk } from "../../../shared/redux";
-import { UserId, usersSlice } from "../users.slice";
-import { fetchUsers } from "./fetch-users";
+import { usersApi } from "../api";
+import { UserId } from "../users.slice";
 
 export const deleteUser =
   (userId: UserId): AppThunk<Promise<void>> =>
-  async (dispatch, _, { api, router }) => {
-    dispatch(usersSlice.actions.deleteUserPending());
-    try {
-      await api.deleteUser(userId);
-      await router.navigate("/users");
-      await dispatch(fetchUsers({ refetch: true }));
-      dispatch(usersSlice.actions.deleteUserSuccess({ userId }));
-    } catch (e) {
-      dispatch(usersSlice.actions.deleteUserFailed());
-    }
+  async (dispatch, _, { router }) => {
+    await dispatch(usersApi.endpoints.deleteUser.initiate(userId)).unwrap();
+
+    await router.navigate("/users");
+
+    await dispatch(
+      usersApi.util.invalidateTags([{ type: "Users", id: "LIST" }])
+    );
   };
